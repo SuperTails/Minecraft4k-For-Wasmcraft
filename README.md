@@ -5,6 +5,14 @@ It is a heavily modified C++ rewrite of [Minecraft4k-Reversed](https://github.co
 
 ## Building
 
+You will need some dependencies first. Using apt:
+
+`$ sudo apt install clang lld wabt libsdl2-dev`
+
+Or using pacman:
+
+`$ sudo pacman -S clang lld wabt sdl2`
+
 Copy the `mcinterface.h` file from Wasmcraft 2 to the root of this directory. Then, simply run `sh build.sh`.
 This will make 3 main files.
 

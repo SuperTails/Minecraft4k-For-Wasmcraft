@@ -9,7 +9,7 @@ Copy the `mcinterface.h` file from Wasmcraft 2 to the root of this directory. Th
 This will make 3 main files.
 
 * `build/Minecraft4k` is a normal binary that uses an SDL2 shim to show what the program should look like without actually running it in Minecraft
-* `build/Minecraft4k.wasm` is a WebAssembly file. Pass is the file you will provide to Wasmcraft.
+* `build/Minecraft4k.wasm` is a WebAssembly file. This is the file you will provide to Wasmcraft.
 * `build/Minecraft4k.wat` is a text version of the WebAssembly output, occasionally useful for debugging or hand optimization.
 
 Note that there is no mouse movement support yet, though breaking blocks works.

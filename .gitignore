@@ -1,10 +1,4 @@
-**/nbproject/private/
-**/nbproject/Makefile-*.mk
-**/nbproject/Package-*.bash
+.vscode/
 build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
-proguard-shrink.bat
-minecraft4k.cfg
+mcinterface.h
+compile_commands.json

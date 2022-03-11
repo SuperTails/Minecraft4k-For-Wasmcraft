@@ -1527,6 +1527,8 @@ public:
     void runLoop() {
         long startTime = currentTimeMillis();
 
+        setupInput();
+
         while (true) {
             long time = currentTimeMillis();
             

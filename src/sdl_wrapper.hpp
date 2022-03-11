@@ -192,6 +192,8 @@ void sdl2_init() {
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 }
 
+void setupInput() {}
+
 void handleEvents() {
 	SDL_Event evt;
 	while (SDL_PollEvent(&evt) != 0) {
@@ -358,6 +360,28 @@ struct Graphics2D {
 };
 
 Graphics2D g2d {};
+
+void setupInput() {
+	turtle_y(27);
+
+	turtle_x(52); turtle_z(-74);
+	turtle_set(Block::DIORITE);
+
+	turtle_x(52); turtle_z(-76);
+	turtle_set(Block::DIORITE);
+
+	turtle_x(53); turtle_z(-75);
+	turtle_set(Block::DIORITE);
+
+	turtle_x(51); turtle_z(-75);
+	turtle_set(Block::DIORITE);
+
+	turtle_x(54); turtle_z(-74);
+	turtle_set(Block::ANDESITE);
+
+	turtle_x(50);
+	turtle_set(Block::ANDESITE);
+}
 
 void handleEvents() {
 	turtle_y(28);

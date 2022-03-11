@@ -42,13 +42,6 @@ static KeySet input {};
 const int SCR_RES_X = (int) (107);
 const int SCR_RES_Y = (int) (60);
 
-class Font {
-public:
-    Font(const char *name) {
-        // TODO:
-    }
-};
-
 struct Color {
     unsigned char r, g, b, a;
 
@@ -176,7 +169,7 @@ void setPixel(int x, int y, Block pixel) {
 }
 
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
+//#include <SDL2/SDL_ttf.h>
 #include <cassert>
 #include <iostream>
 #include <math.h>
@@ -187,20 +180,16 @@ void print(int i) {
 
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
-TTF_Font* sans = NULL;
 
 void sdl2_init() {
 	assert(SDL_Init(SDL_INIT_VIDEO) >= 0);
 
-	assert(TTF_Init() == 0);
+	//assert(TTF_Init() == 0);
 
 	window = SDL_CreateWindow("Minecraft4k", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
 	assert(window != NULL);
 
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-	sans = TTF_OpenFont("/usr/share/fonts/truetype/freefont/FreeSans.ttf", 10);
-	assert(sans != nullptr);
 }
 
 void handleEvents() {
@@ -334,7 +323,7 @@ public:
 		std::cout << "drew a rect! " << x << " " << y << " " << w << " " << h << "\n";
 	}
 
-	void setFont(Font font) {
+	/*void setFont(Font font) {
 		// TODO:
 	}
 
@@ -349,7 +338,7 @@ public:
 
 		SDL_DestroyTexture(t);
 		SDL_FreeSurface(msg);
-	}
+	}*/
 };
 
 void repaint() {
@@ -380,10 +369,16 @@ void handleEvents() {
 	input.set(KeyEvent::VK_S, turtle_get() == Block::COBBLESTONE);
 
 	turtle_x(53); turtle_z(-75);
-	input.set(KeyEvent::VK_A, turtle_get() == Block::COBBLESTONE);
+	input.set(/*KeyEvent::VK_A*/ KeyEvent::VK_COMMA, turtle_get() == Block::COBBLESTONE);
 
 	turtle_x(51); turtle_z(-75);
-	input.set(KeyEvent::VK_D, turtle_get() == Block::COBBLESTONE);
+	input.set(/*KeyEvent::VK_D*/ KeyEvent::VK_PERIOD, turtle_get() == Block::COBBLESTONE);
+
+	turtle_x(54); turtle_z(-74);
+	input.set(KeyEvent::MOUSE_LEFT, turtle_get() == Block::COBBLESTONE);
+
+	turtle_x(50);
+	input.set(KeyEvent::MOUSE_RIGHT, turtle_get() == Block::COBBLESTONE);
 }
 
 void repaint() {

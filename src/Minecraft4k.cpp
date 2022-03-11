@@ -221,6 +221,14 @@ int imax(int a, int b) {
     }
 }
 
+int abs(int x) {
+    if (x > 0) {
+        return x;
+    } else {
+        return -x;
+    }
+}
+
 /* ================ */
 
 const bool classic = false;
@@ -280,7 +288,6 @@ const Vec3 AC_NIGHT = Vec3(0.3f, 0.3f, 0.5f);
 const Vec3 YC_NIGHT = Vec3(0.004f, 0.004f, 0.008f);
 
 long deltaTime = 0;
-Font font = Font("Arial");
 
 int isqrt(int x) {
     assert(x >= 0);
@@ -726,13 +733,13 @@ Block renderPixel(
 
                 switch(lastAxis) {
                     case Axis::X:
-                        placeBlockPosX = stepX;
+                        placeBlockPosX = -stepX;
                         break;
                     case Axis::Y:
-                        placeBlockPosY = stepY;
+                        placeBlockPosY = -stepY;
                         break;
                     case Axis::Z:
-                        placeBlockPosZ = stepZ;
+                        placeBlockPosZ = -stepZ;
                 }
 
                 hoverCheckDist = rayDist;
@@ -1525,11 +1532,6 @@ public:
             
             handleEvents();
 
-            sinYaw = cameraYaw.sin();
-            cosYaw = cameraYaw.cos();
-            sinPitch = cameraPitch.sin();
-            cosPitch = cameraPitch.cos();
-            
             lightDirection.y = (Fix16(fix16_from_int(time)) / Fix16(10000.0)).sin();
             
             lightDirection.x = 0.0; //lightDirection.y * 0.5f;
@@ -1560,15 +1562,39 @@ public:
                 if (cameraPitch > 1.57F)
                     cameraPitch = 1.57F;
                 
+                #ifdef HOSTED
+                    std::cout << "Foo:\n";
+                    std::cout << (int32_t)mouseDelta.x << "\n";
+                    std::cout << (int32_t)(Fix16((int16_t)mouseDelta.x) / 400.0F) << "\n";
+                    std::cout << (int32_t)cameraYaw << "\n";
+                #endif
+                
+                sinYaw = cameraYaw.sin();
+                cosYaw = cameraYaw.cos();
+                sinPitch = cameraPitch.sin();
+                cosPitch = cameraPitch.cos();
+
+                Fix16 walkSpeed = 0.25;
+                
                 startTime += 10L;
-                Fix16 inputX = Fix16(fix16_from_int((input.contains(KeyEvent::VK_D) - input.contains(KeyEvent::VK_A)))) * Fix16(0.02F);
-                Fix16 inputZ = Fix16(fix16_from_int((input.contains(KeyEvent::VK_W) - input.contains(KeyEvent::VK_S)))) * Fix16(0.02F);
+                Fix16 inputX = Fix16(fix16_from_int((input.contains(KeyEvent::VK_D) - input.contains(KeyEvent::VK_A)))) * walkSpeed;
+                Fix16 inputZ = Fix16(fix16_from_int((input.contains(KeyEvent::VK_W) - input.contains(KeyEvent::VK_S)))) * walkSpeed;
                 velocityX *= 0.5F;
                 velocityY *= 0.99F;
                 velocityZ *= 0.5F;
                 velocityX += sinYaw * inputZ + cosYaw * inputX;
                 velocityZ += cosYaw * inputZ - sinYaw * inputX;
                 velocityY += 0.003F;
+
+                if (abs((int32_t)velocityX) <= 4) {
+                    velocityX = 0;
+                }
+                if (abs((int32_t)velocityY) <= 4) {
+                    velocityY = 0;
+                }
+                if (abs((int32_t)velocityZ) <= 4) {
+                    velocityZ = 0;
+                }
                 
                 
                 //check for movement on each axis individually (thanks JuPaHe64!)
@@ -1699,15 +1725,19 @@ public:
             
             paint(g2d);
             
-            if(hovered) {
-                mouseLocation = getMouseLocation();
+            if (hovered) {
+                //mouseLocation = getMouseLocation();
                 
-                mouseDelta = Point(mouseLocation.x - lastMouseLocation.x, mouseLocation.y - lastMouseLocation.y);
+                int lookSpeed = 50;
+
+                int xChange = (input.contains(KeyEvent::VK_COMMA) - input.contains(KeyEvent::VK_PERIOD)) * lookSpeed;
+
+                mouseDelta = Point(xChange, 0);
                 
                 recenterMouse(frame);
                 
-                mouseLocation = getMouseLocation();
-                lastMouseLocation = mouseLocation;
+                //mouseLocation = getMouseLocation();
+                //lastMouseLocation = mouseLocation;
             } else {
                 mouseDelta = Point();
             }
@@ -1787,14 +1817,6 @@ private:
         return b ? 1 : 0;
     }
 };
-
-int abs(int x) {
-    if (x > 0) {
-        return x;
-    } else {
-        return -x;
-    }
-}
 
 int main() {
 	memset(world, 0, sizeof(world));
